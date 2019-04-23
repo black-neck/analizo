@@ -142,3 +142,38 @@ See commit `005c3bff4e0809eae0340e7629678186d1621930` for an example.
 python, and git (your operating system probably already has packages for these)
 
 2) Install Doxyparse (see [Doxyparse](https://github.com/analizo/doxyparse/wiki))
+
+For arch-linux you probably will need to follow these steps:
+
+1. Remove or comment out this two lines at dist.ini file
+ ```
+ 67      [TemplateFiles]
+ 68      filename = debian/control
+```
+2. Install these three packages: 
+    - [cpanm](https://www.archlinux.org/packages/community/any/cpanminus/)
+    - [dist-zilla](https://aur.archlinux.org/packages/perl-dist-zilla/)
+    - [gnuplot](https://www.archlinux.org/packages/extra/x86_64/gnuplot/)
+```
+$ yay -Sy cpanminus
+$ yay -Sy perl-dist-zilla
+$ yay -Sy gnuplot
+```
+3. Install these two cpanm packages:
+```
+$ cpanm Alien::Gnuplot
+$ cpanm Graph::Writer::DSM
+```
+4. Run develop setup:
+```
+$ ./development-setup.sh
+```
+5. The tests should run normally
+```
+$ dzil test
+
+All tests successful.
+Files=52, Tests=1600, 114 wallclock secs ( 0.45 usr  0.08 sys + 104.49 cusr 12.86 csys = 117.88 CPU)
+Result: PASS
+[DZ] all's well; removing .build/WDoHLu7Z97
+```
