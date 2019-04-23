@@ -111,6 +111,46 @@ setup_generic() {
   dzil listdeps | cpanm
 }
 
+setup_archlinux() {
+  cpanminus_mirror="http://mirror.f4st.host/archlinux/community/os/x86_64/cpanminus-1.7044-2-any.pkg.tar.xz"
+  gnuplot_mirror="http://mirror.f4st.host/archlinux/extra/os/x86_64/gnuplot-5.2.6-2-x86_64.pkg.tar.xz"
+  dzil_snapshot="https://aur.archlinux.org/cgit/aur.git/snapshot/perl-dist-zilla.tar.gz"
+
+  which cpanminus || install_aur_mirror $cpanminus_mirror
+  which gnuplot || install_aur_mirror $gnuplot_mirror
+  install_aur_snapshot $dzil_snapshot
+  cpanm --local-lib=~/perl5 local::lib && eval $(perl -I ~/perl5/lib/perl5/ -Mlocal::lib)
+  cpanm Alien::Gnuplot
+  cpanm Graph::Writer::DSM
+  cpanm Dist::Zilla::Plugin::VersionFromModule
+
+  # comment line 67 and 68 of dist.ini
+  sed -i '67,68 s/^/;/' dist.ini
+  setup_generic
+}
+
+# $1 - mirror url
+install_aur_mirror() {
+    curl -L -O $1
+    pkg=${1##*/}
+    sudo pacman -U $pkg
+    rm $pkg
+}
+
+# $1 - snapshot url
+install_aur_snapshot() {
+    curl -L -O $1
+    tarball=${1##*/}
+    tar -xzvf $tarball
+    pkg=${tarball%%.*}
+    cd $pkg
+    makepkg -Acs
+    sudo pacman -U *.pkg.tar.xz
+    cd ..
+    rm -r $pkg
+    rm $tarball
+}
+              
 if [ ! -f ./bin/analizo ]; then
   echo "Please run this script from the root of Analizo sources!"
   exit 1
@@ -123,6 +163,8 @@ fi
 
 if [ -x /usr/bin/dpkg -a -x /usr/bin/apt-get -a "$force_generic" = false ]; then
   setup_debian
+elif [ -f /etc/arch-release ]; then
+  setup_archlinux
 else
   setup_generic
 fi
