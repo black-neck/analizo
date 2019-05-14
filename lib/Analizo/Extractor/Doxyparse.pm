@@ -113,6 +113,11 @@ sub feed {
           $self->model->add_loc($self->current_member, $definition->{$name}->{lines_of_code});
         }
 
+        #method CLOC
+        if (defined $definition->{$name}->{comment_lines_of_code}) {
+          $self->model->add_cloc($self->current_member, $definition->{$name}->{comment_lines_of_code});
+        }
+
         # method parameters
         if (defined $definition->{$name}->{parameters}) {
           $self->model->add_parameters($self->current_member, $definition->{$name}->{parameters});

@@ -18,6 +18,7 @@ use Analizo::Metric::NumberOfPublicAttributes;
 use Analizo::Metric::NumberOfPublicMethods;
 use Analizo::Metric::ResponseForClass;
 use Analizo::Metric::StructuralComplexity;
+use Analizo::Metric::CommentLines;
 
 __PACKAGE__->mk_accessors(qw(model metric_calculators));
 
@@ -52,6 +53,7 @@ sub _initialize_metric_calculators {
     npa                  => Analizo::Metric::NumberOfPublicAttributes->new(model => $model),
     rfc                  => Analizo::Metric::ResponseForClass->new(model => $model),
     sc                   => Analizo::Metric::StructuralComplexity->new(model => $model, cbo => $cbo, lcom4 => $lcom4),
+    cloc                 => Analizo::Metric::CommentLines->new(model => $model),
 
   );
   return \%calculators;
@@ -83,4 +85,3 @@ sub report {
 }
 
 1;
-

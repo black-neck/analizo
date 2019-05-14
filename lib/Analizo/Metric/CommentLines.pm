@@ -1,11 +1,11 @@
-package Analizo::Metric::LinesOfCode;
+package Analizo::Metric::CommentLines;
 use strict;
 use parent qw(Class::Accessor::Fast Analizo::ModuleMetric);
 use Statistics::Descriptive;
 
 =head1 NAME
 
-Analizo::Metric::LinesOfCode - Lines of Code (LOC) metric
+Analizo::Metric::CommentLines - Lines of Code (LOC) metric
 
 =head1 DESCRIPTION
 
@@ -36,7 +36,7 @@ sub new {
 }
 
 sub description {
-  return "Lines of Code";
+  return "Comment Lines";
 }
 
 sub calculate {

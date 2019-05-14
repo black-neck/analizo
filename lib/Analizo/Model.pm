@@ -150,6 +150,11 @@ sub add_loc {
     $self->{lines}->{$function} = $lines;
 }
 
+sub add_cloc{
+  my ($self, $function, $comment_lines) = @_;
+  $self->{$comment_lines}->{$function} = $comment_lines;
+}
+
 sub add_conditional_paths {
   my ($self, $function, $conditional_paths) = @_;
   $self->{conditional_paths}->{$function} = $conditional_paths;
