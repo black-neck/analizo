@@ -1,7 +1,10 @@
-package Analizo::Model;
+package Analizo::Models::Old;
 use strict;
 use Graph;
 use File::Basename;
+use Analizo::Models::Declaration;
+
+our $AUTOLOAD;
 
 sub new {
   my @defaults = (
@@ -23,6 +26,27 @@ sub new {
   return bless { @defaults }, __PACKAGE__;
 }
 
+sub AUTOLOAD {
+  return if $AUTOLOAD =~ /::DESTROY$/;
+
+  $AUTOLOAD =~ s/^.*:://;
+  return Analizo::Models::Declaration->$AUTOLOAD(@_);
+}
+# sub declare_variable {
+#     my ($self, $module, $variable) = @_;
+#     return Analizo::Models::Declaration::declare_variable($self, $module, $variable);
+# }
+
+# sub declare_function {
+#   my ($self, $module, $function) = @_;
+#   return Analizo::Models::Declaration::declare_function($self, $module, $function);
+# }
+
+# sub declare_module {
+#   my ($self, $module, $file) = @_;
+#   return Analizo::Models::Declaration::declare_module($module, $file);
+# }
+
 sub modules {
   my ($self) = @_;
   return $self->{modules};
@@ -33,24 +57,6 @@ sub module_names {
   return @{$self->{module_names}};
 }
 
-sub declare_module {
-  my ($self, $module, $file) = @_;
-  if (! grep { $_ eq $module} @{$self->{module_names}}) {
-    push @{$self->{module_names}}, $module;
-  }
-  if (defined($file)) {
-    #undup filename
-    foreach (@{$self->{files}->{$module}}) {
-      return if($_ eq $file);
-    }
-
-    $self->{files}->{$module} ||= [];
-    push(@{$self->{files}->{$module}}, $file);
-
-    $self->{module_by_file}->{$file} ||= [];
-    push @{$self->{module_by_file}->{$file}}, $module;
-  }
-}
 
 sub files {
   my ($self, $module) = @_;
@@ -79,43 +85,9 @@ sub members {
   return $self->{members};
 }
 
-sub declare_member {
-  my ($self, $module, $member, $type) = @_;
-
-  # mapping member to module
-  $self->{members}->{$member} = $module;
-}
-
 sub type {
   my ($self, $member) = @_;
   return $self->{types}->{$member};
-}
-
-sub declare_function {
-  my ($self, $module, $function) = @_;
-  return unless $module;
-  $self->declare_member($module, $function, 'function');
-
-  if (!exists($self->{modules}->{$module})){
-    $self->{modules}->{$module} = {};
-    $self->{modules}->{$module}->{functions} = [];
-  }
-  if(! grep { $_ eq $function } @{$self->{modules}->{$module}->{functions}}){
-    push @{$self->{modules}->{$module}->{functions}}, $function;
-  }
-}
-
-sub declare_variable {
-  my ($self, $module, $variable) = @_;
-  $self->declare_member($module, $variable, 'variable');
-
-  if (!exists($self->{modules}->{$module})){
-    $self->{modules}->{$module} = {};
-    $self->{modules}->{$module}->{variables} = [];
-  }
-  if(! grep { $_ eq $variable } @{$self->{modules}->{$module}->{variables}}){
-    push @{$self->{modules}->{$module}->{variables}}, $variable;
-  }
 }
 
 sub add_call {
