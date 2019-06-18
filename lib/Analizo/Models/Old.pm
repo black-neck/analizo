@@ -32,20 +32,7 @@ sub AUTOLOAD {
   $AUTOLOAD =~ s/^.*:://;
   return Analizo::Models::Declaration->$AUTOLOAD(@_);
 }
-# sub declare_variable {
-#     my ($self, $module, $variable) = @_;
-#     return Analizo::Models::Declaration::declare_variable($self, $module, $variable);
-# }
 
-# sub declare_function {
-#   my ($self, $module, $function) = @_;
-#   return Analizo::Models::Declaration::declare_function($self, $module, $function);
-# }
-
-# sub declare_module {
-#   my ($self, $module, $file) = @_;
-#   return Analizo::Models::Declaration::declare_module($module, $file);
-# }
 
 sub modules {
   my ($self) = @_;
