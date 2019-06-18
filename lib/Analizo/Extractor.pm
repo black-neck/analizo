@@ -5,7 +5,7 @@ use warnings;
 
 use parent qw(Class::Accessor::Fast Analizo::Filter::Client);
 
-use Analizo::Model;
+use Analizo::Models::Old;
 use Analizo::FilenameFilter;
 use Analizo::LanguageFilter;
 
@@ -54,7 +54,7 @@ sub load {
 sub model {
   my ($self) = @_;
   if (!exists($self->{model})) {
-    $self->{model} = Analizo::Model->new;
+    $self->{model} = Analizo::Models::Old->new;
   }
   return $self->{model};
 }

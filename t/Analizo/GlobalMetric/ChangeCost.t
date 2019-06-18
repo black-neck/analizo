@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use parent qw(Test::Analizo::Class);
 use Test::More;
-use Analizo::Model;
+use Analizo::Models::Old;
 use vars qw($model $metric);
 
 BEGIN {
@@ -11,7 +11,7 @@ BEGIN {
 }
 
 sub setup : Test(setup) {
-  $model = Analizo::Model->new;
+  $model = Analizo::Models::Old->new;
   $metric = Analizo::GlobalMetric::ChangeCost->new(model => $model);
 }
 

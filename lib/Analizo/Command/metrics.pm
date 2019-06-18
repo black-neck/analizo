@@ -55,7 +55,7 @@ sub validate {
 sub execute {
   my ($self, $opt, $args) = @_;
   if($opt->list){
-    my $metrics_handler = Analizo::Metrics->new(model => Analizo::Model->new);
+    my $metrics_handler = Analizo::Metrics->new(model => Analizo::Models::Old->new);
     my %metrics = $metrics_handler->list_of_metrics();
     my %global_metrics = $metrics_handler->list_of_global_metrics();
     print "Global Metrics:\n";

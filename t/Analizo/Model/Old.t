@@ -1,23 +1,23 @@
-package t::Analizo::Model;
+package t::Analizo::Models::Old;
 use strict;
 use warnings;
 use parent qw(Test::Analizo::Class);
 use Test::More;
 
-use Analizo::Model;
+use Analizo::Models::Old;
 
 sub constructor : Tests {
-  isa_ok(Analizo::Model->new, 'Analizo::Model');
+  isa_ok(Analizo::Models::Old->new, 'Analizo::Models::Old');
 }
 
 sub empty_object : Tests {
-  my $model = Analizo::Model->new;
+  my $model = Analizo::Models::Old->new;
   isa_ok($model->modules, 'HASH', 'must have modules');
   isa_ok($model->members, 'HASH', 'must have members');
 }
 
 sub declaring_modules : Tests {
-  my $model = Analizo::Model->new;
+  my $model = Analizo::Models::Old->new;
   $model->declare_module('Module1');
   $model->declare_module('Module2');
   my @modules = $model->module_names;
@@ -26,13 +26,13 @@ sub declaring_modules : Tests {
 }
 
 sub declaring_modules_with_files : Tests {
-  my $model = Analizo::Model->new;
+  my $model = Analizo::Models::Old->new;
   $model->declare_module('Module1', 'src/module1.c');
   is_deeply($model->files('Module1'), ['src/module1.c']);
 }
 
 sub retrieving_modules_by_file : Tests {
-  my $model = Analizo::Model->new;
+  my $model = Analizo::Models::Old->new;
   $model->declare_module('Module1', 'src/module1.c');
   my @module = $model->module_by_file('src/module1.c');
   is($module[0], 'Module1');
@@ -43,7 +43,7 @@ sub retrieving_modules_by_file : Tests {
 }
 
 sub declaring_inheritance : Tests {
-  my $model = Analizo::Model->new;
+  my $model = Analizo::Models::Old->new;
   $model->add_inheritance('Child', 'Parent');
   my @parents = $model->inheritance('Child');
   is($parents[0], 'Parent', 'class with one superclass');
@@ -54,7 +54,7 @@ sub declaring_inheritance : Tests {
 }
 
 sub declaring_function : Tests {
-  my $model = Analizo::Model->new;
+  my $model = Analizo::Models::Old->new;
   $model->declare_function('mymodule', 'myfunction');
   $model->declare_function('mymodule', 'anotherfunction');
 
@@ -70,7 +70,7 @@ sub declaring_function : Tests {
 }
 
 sub declaring_variables : Tests {
-  my $model = Analizo::Model->new;
+  my $model = Analizo::Models::Old->new;
   $model->declare_variable('mymodule', 'myvariable');
   ok((grep { $_ eq 'myvariable' } keys(%{$model->members})), "declared variable must be stored");
   is('mymodule', $model->members->{'myvariable'}, 'must map variable to module');
@@ -79,25 +79,25 @@ sub declaring_variables : Tests {
 }
 
 sub adding_calls : Tests {
-  my $model = Analizo::Model->new;
+  my $model = Analizo::Models::Old->new;
   $model->add_call('function1', 'function2');
   is($model->calls->{'function1'}->{'function2'}, 'direct', 'must register function call');
 }
 
 sub indirect_calls : Tests {
-  my $model = Analizo::Model->new;
+  my $model = Analizo::Models::Old->new;
   $model->add_call('f1', 'f2', 'indirect');
   is($model->calls->{'f1'}->{'f2'}, 'indirect', 'must register indirect call');
 }
 
 sub addding_variable_uses : Tests {
-  my $model = Analizo::Model->new;
+  my $model = Analizo::Models::Old->new;
   $model->add_variable_use('function1', 'variable9');
   is($model->calls->{'function1'}->{'variable9'}, 'variable', 'must register variable use');
 }
 
 sub querying_variables : Tests {
-  my $model = Analizo::Model->new;
+  my $model = Analizo::Models::Old->new;
   $model->declare_variable('mod1', 'v1');
   $model->declare_variable('mod1', 'v2');
 
@@ -106,7 +106,7 @@ sub querying_variables : Tests {
 }
 
 sub querying_functions : Tests {
-  my $model = Analizo::Model->new;
+  my $model = Analizo::Models::Old->new;
   $model->declare_function('mod1', 'f1');
   $model->declare_function('mod1', 'f2');
 
@@ -115,7 +115,7 @@ sub querying_functions : Tests {
 }
 
 sub querying_members : Tests {
-  my $model = Analizo::Model->new;
+  my $model = Analizo::Models::Old->new;
   $model->declare_function('mod1', 'f1');
   $model->declare_variable('mod1', 'v1');
 
@@ -129,37 +129,37 @@ sub querying_members : Tests {
 }
 
 sub declaring_protection : Tests {
-  my $model = Analizo::Model->new;
+  my $model = Analizo::Models::Old->new;
   $model->add_protection('main::f1', 'public');
   is($model->{protection}->{'main::f1'}, 'public');
 }
 
 sub declating_lines_of_code : Tests {
-  my $model = Analizo::Model->new;
+  my $model = Analizo::Models::Old->new;
   $model->add_loc('main::f1', 50);
   is($model->{lines}->{'main::f1'}, 50);
 }
 
 sub declaring_number_of_parameters {
-  my $model = Analizo::Model->new;
+  my $model = Analizo::Models::Old->new;
   $model->add_parameters('main::function', 2);
   is($model->{parameters}->{'main::function'}, 2);
 }
 
 sub declaring_number_of_conditional_paths : Tests {
-  my $model = Analizo::Model->new;
+  my $model = Analizo::Models::Old->new;
   $model->add_conditional_paths('main::function', 2);
   is($model->{conditional_paths}->{'main::function'}, 2);
 }
 
 sub adding_abstract_class : Tests {
-  my $model = Analizo::Model->new;
+  my $model = Analizo::Models::Old->new;
   $model->add_abstract_class('An_Abstract_Class');
   is($model->abstract_classes, 1, 'model detects an abstract class');
 }
 
 sub build_graphs_from_function_calls : Tests {
-  my $model = Analizo::Model->new;
+  my $model = Analizo::Models::Old->new;
   $model->declare_module('a', 'src/a.c');
   $model->declare_module('b', 'src/b.c');
   $model->declare_module('c', 'src/c.c');
@@ -175,7 +175,7 @@ sub build_graphs_from_function_calls : Tests {
 }
 
 sub build_graphs_from_inheritance : Tests {
-  my $model = Analizo::Model->new;
+  my $model = Analizo::Models::Old->new;
   $model->declare_module('a', 'src/a.c');
   $model->declare_module('b', 'src/b.c');
   $model->declare_module('c', 'src/c.c');
@@ -190,7 +190,7 @@ sub build_graphs_from_inheritance : Tests {
 }
 
 sub build_graphs_from_funcion_calls_and_inheritance : Tests {
-  my $model = Analizo::Model->new;
+  my $model = Analizo::Models::Old->new;
   $model->declare_module('a', 'src/a.c');
   $model->declare_module('b', 'src/b.c');
   $model->declare_module('c', 'src/c.c');
@@ -210,7 +210,7 @@ sub build_graphs_from_funcion_calls_and_inheritance : Tests {
 }
 
 sub use_file_as_vertices_in_graphs : Tests {
-  my $model = Analizo::Model->new;
+  my $model = Analizo::Models::Old->new;
   $model->declare_module('a', 'src/a.c');
   $model->declare_module('b', 'src/b.c');
   $model->declare_module('c', 'src/c.c');
@@ -221,7 +221,7 @@ sub use_file_as_vertices_in_graphs : Tests {
 }
 
 sub group_files_when_build_graphs : Tests {
-  my $model = Analizo::Model->new;
+  my $model = Analizo::Models::Old->new;
   $model->declare_module('a', 'src/a.h');
   $model->declare_module('a', 'src/a.c');
   $model->declare_module('b', 'src/b.h');
@@ -235,12 +235,12 @@ sub group_files_when_build_graphs : Tests {
 }
 
 sub empty_call_graph : Tests {
-  my $model = Analizo::Model->new;
+  my $model = Analizo::Models::Old->new;
   is($model->callgraph, '', 'empty output must give empty digraph');
 }
 
 sub listing_calls : Tests {
-  my $model = Analizo::Model->new;
+  my $model = Analizo::Models::Old->new;
   $model->declare_function('module1', 'function1');
   $model->declare_function('module1', 'function2');
   $model->add_call('function1', 'function2', 'direct');
@@ -252,7 +252,7 @@ sub listing_calls : Tests {
 }
 
 sub listing_two_calls : Tests {
-  my $model = Analizo::Model->new;
+  my $model = Analizo::Models::Old->new;
   $model->declare_function('module1', 'function1(type)');
   $model->declare_function('module1', 'function2(type1, type2)');
   $model->declare_function('module1', 'function3()');
@@ -266,7 +266,7 @@ sub listing_two_calls : Tests {
 }
 
 sub listing_only_defined_functions : Tests {
-  my $model = Analizo::Model->new;
+  my $model = Analizo::Models::Old->new;
   $model->declare_function('module1', 'function1');
   $model->declare_function('module2', 'function2');
   $model->add_call('function1', 'function2');
@@ -279,7 +279,7 @@ sub listing_only_defined_functions : Tests {
 }
 
 sub ommiting_functions : Tests {
-  my $model = Analizo::Model->new;
+  my $model = Analizo::Models::Old->new;
   $model->declare_function('module1', 'function1');
   $model->declare_function('module1', 'function2');
   $model->declare_function('module1', 'function3');
@@ -298,7 +298,7 @@ sub ommiting_functions : Tests {
 }
 
 sub including_external_functions : Tests {
-  my $model = Analizo::Model->new;
+  my $model = Analizo::Models::Old->new;
   $model->declare_function('module1', 'function1');
   $model->add_call('function1', 'function2');
   is(
@@ -309,7 +309,7 @@ sub including_external_functions : Tests {
 }
 
 sub groupping_by_module : Tests {
-  my $model = Analizo::Model->new;
+  my $model = Analizo::Models::Old->new;
   $model->declare_function('cluster1.c.r1874.expand', 'function1');
   $model->declare_function('cluster2.c.r9873.expand', 'function2');
   $model->declare_function('cluster2.c.r9873.expand', 'function3');
@@ -337,7 +337,7 @@ sub groupping_by_module : Tests {
 }
 
 sub use_of_variables : Tests {
-  my $model = Analizo::Model->new;
+  my $model = Analizo::Models::Old->new;
   $model->declare_function('module1.c.r1234.expand', 'function1');
   $model->declare_variable('module2.c', 'myvariable');
   $model->add_variable_use('function1', 'myvariable');

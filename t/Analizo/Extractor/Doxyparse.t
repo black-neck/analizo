@@ -18,7 +18,7 @@ sub constructor : Tests {
 }
 
 sub has_a_model : Tests {
-  isa_ok((Analizo::Extractor->load('Doxyparse'))->model, 'Analizo::Model');
+  isa_ok((Analizo::Extractor->load('Doxyparse'))->model, 'Analizo::Models::Old');
 }
 
 sub current_module : Tests {

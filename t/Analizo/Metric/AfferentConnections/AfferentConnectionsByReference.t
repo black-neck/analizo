@@ -5,7 +5,7 @@ use parent qw(Test::Analizo::Class);
 use Test::More;
 use File::Basename;
 
-use Analizo::Model;
+use Analizo::Models::Old;
 use Analizo::Metric::AfferentConnections;
 
 eval('$Analizo::Metric::QUIET = 1;'); # the eval is to avoid Test::* complaining about possible typo
@@ -13,7 +13,7 @@ eval('$Analizo::Metric::QUIET = 1;'); # the eval is to avoid Test::* complaining
 use vars qw($model $acc);
 
 sub setup : Test(setup) {
-  $model = Analizo::Model->new;
+  $model = Analizo::Models::Old->new;
   $acc = Analizo::Metric::AfferentConnections->new(model => $model);
 
   $model->declare_module('A', 'A.c');

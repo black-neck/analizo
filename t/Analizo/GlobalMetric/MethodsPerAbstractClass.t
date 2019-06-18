@@ -5,13 +5,13 @@ use parent qw(Test::Analizo::Class);
 use Test::More;
 use File::Basename;
 
-use Analizo::Model;
+use Analizo::Models::Old;
 use Analizo::GlobalMetric::MethodsPerAbstractClass;
 
 use vars qw($model $mac);
 
 sub setup : Test(setup) {
-  $model = Analizo::Model->new;
+  $model = Analizo::Models::Old->new;
   $mac = Analizo::GlobalMetric::MethodsPerAbstractClass->new(model => $model);
 }
 

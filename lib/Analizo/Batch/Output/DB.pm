@@ -263,11 +263,11 @@ sub ddl_statements($) {
 }
 
 use Analizo::Metrics;
-use Analizo::Model;
+use Analizo::Models::Old;
 my $__metric_columns = undef;
 sub _metric_columns() {
   if (!$__metric_columns) {
-    my $metrics = Analizo::Metrics->new(model => Analizo::Model->new);
+    my $metrics = Analizo::Metrics->new(model => Analizo::Models::Old->new);
 
     my %module_metrics = $metrics->list_of_metrics();
     my @module_metrics= keys(%module_metrics);

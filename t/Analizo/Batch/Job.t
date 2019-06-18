@@ -58,9 +58,9 @@ sub execute : Tests {
     }
   );
   ok($prepared && $cleaned, 'must call prepare() and cleanup() on execute');
-  isa_ok($job->model, 'Analizo::Model');
+  isa_ok($job->model, 'Analizo::Models::Old');
   isa_ok($job->metrics, 'Analizo::Metrics');
-  isa_ok($job->metrics->model, 'Analizo::Model');
+  isa_ok($job->metrics->model, 'Analizo::Models::Old');
   ok($metrics_data_called, 'must force metrics calculation during execute() bu calling $metrics->data()');
 }
 
