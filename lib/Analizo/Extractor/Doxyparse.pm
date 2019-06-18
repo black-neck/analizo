@@ -19,7 +19,7 @@ sub _add_file {
   push(@{$self->{files}}, $file);
 }
 
-sub _cpp_hack {
+sub _cpp_finder {
   my ($self, $module) = @_;
   my $current = $self->current_file;
   if (defined($current) && $current =~ /^(.*)\.(h|hpp)$/) {
@@ -30,6 +30,12 @@ sub _cpp_hack {
       $self->model->declare_module($module, $file);
     }
   }
+}
+
+sub _hpp_finder {
+  my ($self, $module) = @_;
+  my $current = $self->current_file;
+
   if (defined($current) && $current =~ /^(.*)\.(cpp|cxx|cc)$/) {
     my $prefix = $1;
     # look for a previously added .h/.hpp/etc
@@ -38,6 +44,7 @@ sub _cpp_hack {
       $self->model->declare_module($module, $file);
     }
   }
+
 }
 
 sub feed {
@@ -60,7 +67,8 @@ sub feed {
       next if defined $yaml->{$full_filename}->{$module} && ref($yaml->{$full_filename}->{$module}) ne 'HASH';
 
       $self->current_module($modulename);
-      $self->_cpp_hack($modulename);
+      $self->_cpp_finder($modulename);
+      $self->_hpp_finder($modulename);
 
       # inheritance
       if (defined $yaml->{$full_filename}->{$module}->{inherits}) {

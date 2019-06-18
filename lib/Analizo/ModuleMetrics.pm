@@ -77,9 +77,16 @@ sub report {
   }
 
   #FIXME: move to another function
-  $self->model->files($module);
+  
+  report_files($self);
 
   return \%values;
+}
+
+sub report_files {
+    my ($self) = @_;
+    
+    $self->model->files($module);
 }
 
 1;
