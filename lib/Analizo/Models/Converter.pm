@@ -3,8 +3,8 @@ package Analizo::Models::Converter;
 use File::Basename;
 our $AUTOLOAD;
 
-
-# Returns undef for any method called here that 
+# Model.pm tries to find its methods in every model module.
+# if the method isn't here, we return undef for it to look in another place.
 sub AUTOLOAD {
   return if $AUTOLOAD =~ /::DESTROY$/;
 

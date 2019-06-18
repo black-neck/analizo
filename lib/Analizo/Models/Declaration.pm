@@ -1,5 +1,22 @@
 package Analizo::Models::Declaration;
 
+our $AUTOLOAD;
+
+# Model.pm tries to find its methods in every model module.
+# if the method isn't here, we return undef for it to look in another place.
+sub AUTOLOAD {
+  return if $AUTOLOAD =~ /::DESTROY$/;
+
+  return undef;
+}
+
+sub declare_member {
+  my ($self, $model, $module, $member, $type) = @_;
+
+  # mapping member to module
+  $model->{members}->{$member} = $module;
+}
+
 sub declare_variable {
   my ($self, $model, $module, $variable) = @_;
   $model->declare_member($module, $variable, 'variable');
@@ -11,13 +28,6 @@ sub declare_variable {
   if(! grep { $_ eq $variable } @{$model->{modules}->{$module}->{variables}}){
     push @{$model->{modules}->{$module}->{variables}}, $variable;
   }
-}
-
-sub declare_member {
-  my ($self, $model, $module, $member, $type) = @_;
-
-  # mapping member to module
-  $model->{members}->{$member} = $module;
 }
 
 sub declare_function {
