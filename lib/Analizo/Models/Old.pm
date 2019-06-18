@@ -3,6 +3,7 @@ use strict;
 use Graph;
 use File::Basename;
 use Analizo::Models::Declaration;
+use Analizo::Models::Converter;
 
 our $AUTOLOAD;
 
@@ -29,8 +30,17 @@ sub new {
 sub AUTOLOAD {
   return if $AUTOLOAD =~ /::DESTROY$/;
 
+  # Autoload has the complete method call, "pkg::model->method"
+  # We only need the method name.
   $AUTOLOAD =~ s/^.*:://;
-  return Analizo::Models::Declaration->$AUTOLOAD(@_);
+
+  # Model is broken into several modules
+  # If the method isn't in Model.pm we should find where it is.
+  my $value;
+  $value = Analizo::Models::Declaration->$AUTOLOAD(@_); 
+  return $value if defined $value;
+  $value = Analizo::Models::Converter->$AUTOLOAD(@_);
+  return $value if defined $value;
 }
 
 
@@ -270,12 +280,6 @@ sub _find_recursively_references_from_deep_inheritance {
   }
 }
 
-sub _function_to_file {
-  my ($self, $function) = @_;
-  return unless exists $self->members->{$function};
-  my $module = $self->members->{$function};
-  $self->{files}->{$module};
-}
 
 sub _add_dependency {
   my ($dependencies, $from, $to) = @_;
@@ -342,18 +346,6 @@ sub callgraph {
     }
   }
   return $graph;
-}
-
-sub _file_to_module {
-  my ($filename) = @_;
-  $filename =~ s/\.r\d+\.expand$//;
-  return basename($filename);
-}
-
-sub _function_to_module {
-  my ($self, $function) = @_;
-  return undef if !exists($self->members->{$function});
-  return _file_to_module($self->members->{$function});
 }
 
 sub _include_caller {
