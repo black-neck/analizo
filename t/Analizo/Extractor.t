@@ -7,7 +7,7 @@ use Test::Exception;
 
 use Analizo::Extractor;
 use Analizo::LanguageFilter;
-use Analizo::Models::Old;
+use Analizo::Models::Model;
 
 # Redefine constructor so that this test class can instantiate
 # Analizo::Extractor directly
@@ -46,7 +46,7 @@ sub current_file : Tests {
 sub current_file_plus_current_module : Tests {
   my $extractor = Analizo::Extractor->new;
 
-  my $model = Analizo::Models::Old->new;
+  my $model = Analizo::Models::Model->new;
   $extractor->{model} = $model;
 
   $extractor->current_file('person.cpp');

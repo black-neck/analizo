@@ -5,12 +5,12 @@ use parent qw(Test::Analizo::Class);
 use Test::More;
 use Statistics::Descriptive;
 use Analizo::GlobalMetrics;
-use Analizo::Models::Old;
+use Analizo::Models::Model;
 
 use vars qw($model $global_metrics);
 
 sub setup : Test(setup) {
-  $model = Analizo::Models::Old->new;
+  $model = Analizo::Models::Model->new;
   $global_metrics = Analizo::GlobalMetrics->new(model => $model);
 }
 

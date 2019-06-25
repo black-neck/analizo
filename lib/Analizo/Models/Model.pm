@@ -1,4 +1,4 @@
-package Analizo::Models::Old;
+package Analizo::Models::Model;
 use strict;
 use Graph;
 use File::Basename;

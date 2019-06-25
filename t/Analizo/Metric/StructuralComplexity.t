@@ -6,7 +6,7 @@ use parent qw(Test::Analizo::Class);
 use Test::More;
 use File::Basename;
 
-use Analizo::Models::Old;
+use Analizo::Models::Model;
 use Analizo::Metric::StructuralComplexity;
 use Analizo::Metric::CouplingBetweenObjects;
 use Analizo::Metric::LackOfCohesionOfMethods;
@@ -16,7 +16,7 @@ eval('$Analizo::Metric::QUIET = 1;'); # the eval is to avoid Test::* complaining
 use vars qw($model $sc $cbo $lcom4);
 
 sub setup : Test(setup) {
-  $model = Analizo::Models::Old->new;
+  $model = Analizo::Models::Model->new;
   $cbo = undef;
   $lcom4 = undef;
   $sc = Analizo::Metric::StructuralComplexity->new(model => $model, cbo => $cbo, lcom4 => $lcom4);

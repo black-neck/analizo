@@ -5,7 +5,7 @@ use parent qw(Test::Analizo::Class);
 use Test::More;
 use File::Basename;
 
-use Analizo::Models::Old;
+use Analizo::Models::Model;
 use Analizo::Metric::LackOfCohesionOfMethods;
 
 eval('$Analizo::Metric::QUIET = 1;'); # the eval is to avoid Test::* complaining about possible typo
@@ -13,7 +13,7 @@ eval('$Analizo::Metric::QUIET = 1;'); # the eval is to avoid Test::* complaining
 use vars qw($model $lcom4);
 
 sub setup : Test(setup) {
-  $model = Analizo::Models::Old->new;
+  $model = Analizo::Models::Model->new;
   $lcom4 = Analizo::Metric::LackOfCohesionOfMethods->new(model => $model);
 }
 

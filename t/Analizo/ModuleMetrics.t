@@ -4,13 +4,13 @@ use warnings;
 use parent qw(Test::Analizo::Class);
 use Test::More;
 
-use Analizo::Models::Old;
+use Analizo::Models::Model;
 use Analizo::ModuleMetrics;
 
 use vars qw($model $module_metrics );
 
 sub setup : Test(setup) {
-  $model = Analizo::Models::Old->new;
+  $model = Analizo::Models::Model->new;
   $module_metrics = Analizo::ModuleMetrics->new(model => $model);
 }
 

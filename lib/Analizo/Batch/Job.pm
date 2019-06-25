@@ -14,7 +14,7 @@ use File::Temp qw/ tempdir /;
 
 use CHI;
 
-use Analizo::Models::Old;
+use Analizo::Models::Model;
 use Analizo::Extractor;
 use Analizo::Metrics;
 
@@ -127,7 +127,7 @@ sub execute {
   my $model_cache_key = "model://$tree_id";
   my $model = $self->cache->get($model_cache_key);
   if (!defined $model) {
-    $model = Analizo::Models::Old->new;
+    $model = Analizo::Models::Model->new;
     my %options = (
       model => $model,
       includedirs => $self->includedirs,
